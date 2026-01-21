@@ -32,18 +32,41 @@ app.get('/info', (req, res) => {
   res.json({ cle1: 'valeur1', cle2: 'valeur2' });
 });
 
- 
-
-app.post('/register', (req, res) => {
-console.log('Données reçues pour l\'inscription');
-console.log(req.body);
-  res.json({ message: 'Inscription réussie !' });
+app.get('/users', (req, res) => {
+  connection.query('SELECT * FROM User', (err, results) => {
+    if (err) {
+      console.error('Erreur lors de la récupération des utilisateurs :', err);
+      res.status(500).json({ message: 'Erreur serveur' });
+      return;
+    }
+    res.json(results);
+  });
 });
 
- 
+
+app.post('/register', (req, res) => {
+
+connection.query(
+  'INSERT INTO User (login, password) VALUES (?, ?)',
+  [req.body.inputValue, req.body.inputValue2],
+  (err, results) => {
+    if (err) {
+      console.error('Erreur lors de l\'insertion dans la base de données :', err);
+      res.status(500).json({ message: 'Erreur serveur' });
+      return;
+    }
+    console.log('Insertion réussie, ID utilisateur :', results.insertId);
+    res.json({ message: 'Inscription réussie !', userId: results.insertId });
+    
+  }
+);
+});
+
+
 
 app.listen(3000, () => {
   let monIp = require("ip").address();
   console.log(`Server running on http://${monIp}:3000`);
 });
+
 
