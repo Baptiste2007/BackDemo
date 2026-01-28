@@ -1,14 +1,18 @@
-//
-// Récupération des éléments du DOM
 const monInput = document.getElementById('monInput');
-const monInput2 = document.getElementById('monInput2');
 const monBouton = document.getElementById('monBouton');
 const userSelectedButton = document.getElementById('userSelectedButton');
- 
+
+
+
+
+
+
+
+
 
 userSelectedButton.addEventListener('click', () => {
     const usersList = document.getElementById('usersList');
-    const selectedUserId = usersList.value;     
+    const selectedUserId = usersList.value;   
     alert('Utilisateur sélectionné ID : ' + selectedUserId);
 });
 
@@ -19,15 +23,20 @@ monBouton.addEventListener('click', () => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ inputValue: monInput.value, inputValue2: monInput2.value })     
+        body: JSON.stringify({ inputValue: monInput.value})     
     }).then(response => response.text())
       .then(data => {
           alert(data);
       });
 });
 
+
+
+
+
+
 window.onload = () => {
-    fetch('/users')
+    fetch('/Users')
     .then(response => response.json())
     .then(users => {
         const usersList = document.getElementById('usersList');

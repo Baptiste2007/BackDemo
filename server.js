@@ -26,14 +26,16 @@ app.get('/login', (req, res) => {
   res.send('<h1>Bienvenue sur la page de login  </h1>');
 });
 
+
+
  
 
 app.get('/info', (req, res) => {
   res.json({ cle1: 'valeur1', cle2: 'valeur2' });
 });
 
-app.get('/users', (req, res) => {
-  connection.query('SELECT * FROM User', (err, results) => {
+app.get('/Users', (req, res) => {
+  connection.query('SELECT * FROM Users', (err, results) => {
     if (err) {
       console.error('Erreur lors de la récupération des utilisateurs :', err);
       res.status(500).json({ message: 'Erreur serveur' });
@@ -44,10 +46,11 @@ app.get('/users', (req, res) => {
 });
 
 
+
 app.post('/register', (req, res) => {
 
 connection.query(
-  'INSERT INTO User (login, password) VALUES (?, ?)',
+  'INSERT INTO Users (login, password) VALUES (?, ?)',
   [req.body.inputValue, req.body.inputValue2],
   (err, results) => {
     if (err) {
@@ -57,10 +60,13 @@ connection.query(
     }
     console.log('Insertion réussie, ID utilisateur :', results.insertId);
     res.json({ message: 'Inscription réussie !', userId: results.insertId });
-    
+
   }
 );
-});
+})
+
+
+
 
 
 
