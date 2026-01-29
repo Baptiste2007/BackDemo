@@ -65,6 +65,22 @@ connection.query(
 );
 })
 
+app.post('/vote', (req, res) => {
+
+  connection.query(
+    'INSERT INTO vote (IdUser, candidateId, date) VALUES (?, ?, NOW())',
+    [req.body.IdUser, req.body.candidateId],
+    (err, results) => {
+      if (err) {
+        console.error('Erreur lors de l\'insertion du vote dans la base de données :', err);
+        res.status(500).json({ message: 'Erreur serveur' });
+        return;
+      }
+      console.log('Vote enregistré avec succès, ID du vote :', results.insertId);
+      res.json({ message: 'Vote enregistré avec succès !', voteId: results.insertId });
+    }
+  );
+  });
 
 
 
