@@ -3,7 +3,8 @@ const monBouton = document.getElementById('monBouton');
 const userSelectedButton = document.getElementById('userSelectedButton');
 const voteButton = document.getElementById('voteButton');
 const usersList = document.getElementById('usersList');
-
+const loginInput = document.getElementById('loginInput');
+const passwordInput = document.getElementById('passwordInput');
 
 
 // Ajout d'un écouteur d'événement sur le bouton de sélection d'utilisateur
@@ -11,7 +12,7 @@ const usersList = document.getElementById('usersList');
 
 userSelectedButton.addEventListener('click', () => {
     const usersList = document.getElementById('usersList');
-    const selectedUserId = usersList.value;   
+    const selectedUserId = usersList.value;
     alert('Utilisateur sélectionné ID : ' + selectedUserId);
 });
 
@@ -22,11 +23,11 @@ monBouton.addEventListener('click', () => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ inputValue: monInput.value})     
+        body: JSON.stringify({ inputValue: monInput.value })
     }).then(response => response.text())
-      .then(data => {
-          alert(data);
-      });
+        .then(data => {
+            alert(data);
+        });
 });
 
 // Ajout d'un écouteur d'événement sur le bouton de vote
@@ -37,30 +38,57 @@ voteButton.addEventListener('click', () => {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ IdUser: selectedUserId, candidateId: usersList.value})     
+        body: JSON.stringify({ IdUser: selectedUserId, candidateId: usersList.value })
     }).then(response => response.text())
-      .then(data => {
-          alert(data);
-      });
+        .then(data => {
+            alert(data);
+        });
 });
+
+
+
 
 // Charger la liste des utilisateurs au chargement de la page
 
 window.onload = () => {
     fetch('/Users')
-    .then(response => response.json())
-    .then(users => {
-        const usersList = document.getElementById('usersList');
-        users.forEach(user => {
-            //création d'un input select option avec id en value et login en texte  
-            const option = document.createElement('option');
-            option.value = user.id;
-            option.text = user.login;
-            usersList.appendChild(option);  
-            
+        .then(response => response.json())
+        .then(users => {
+            const usersList = document.getElementById('usersList');
+            users.forEach(user => {
+                //création d'un input select option avec id en value et login en texte  
+                const option = document.createElement('option');
+                option.value = user.id;
+                option.text = user.login;
+                usersList.appendChild(option);
+
+            });
         });
-    });
 }
+
+const loginButton = document.getElementById('loginButton');
+loginButton.addEventListener('click', () => {
+    const loginInput = document.getElementById('loginInput').value;
+    const passwordInput = document.getElementById('passwordInput').value;
+
+    fetch('/connexion', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ login: loginInput, password: passwordInput })
+    }).then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            alert('ID utilisateur : ' + data.user.id);
+            localStorage.setItem('userId', data.user.id);
+           
+        });
+});
+
+ 
+  
+
 
 
 
