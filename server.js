@@ -66,8 +66,8 @@ app.post('/register', (req, res) => {
 app.post('/vote', (req, res) => {
 
   connection.query(
-    'INSERT INTO vote (IdUser, candidateId, date) VALUES (?, ?, NOW())',
-    [req.body.IdUser, req.body.candidateId],
+    'INSERT INTO vote (IdCandidat,IdUser, date) VALUES (?, ?, NOW())',
+    [req.body.IdUser, req.body.IdCandidat],
     (err, results) => {
       if (err) {
         console.error('Erreur lors de l\'insertion du vote dans la base de données :', err);
